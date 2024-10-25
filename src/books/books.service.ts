@@ -120,7 +120,7 @@ export class BooksService {
       ...this.books[index],
       ...updateBookDto
     }
-    return this.books[index];
+    return this.books;
   }
 
   remove(id: number) {
