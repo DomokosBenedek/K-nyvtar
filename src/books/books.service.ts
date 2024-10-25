@@ -90,15 +90,13 @@ export class BooksService {
   ];
 
   createBook(createBookDto: CreateBookDto) { 
-    const book = new Book();
-    book.id = this.books.length + 1;
-    book.title = createBookDto.title;
-    book.author = createBookDto.author;
-    book.isbn = createBookDto.isbn;
-    book.publishYear = createBookDto.publishYear;
-    book.reserved = false;
-    this.books.push(book);
-    return book;
+    const newBook ={
+      id: this.books.length + 1,
+      ...createBookDto,
+      reserved : false,
+    }
+    this.books.push(newBook);
+    return newBook;
   } 
 
   create(createBookDto: CreateBookDto) {
@@ -114,7 +112,15 @@ export class BooksService {
   }
 
   update(id: number, updateBookDto: UpdateBookDto) {
-    this.update(id, updateBookDto);
+    const index = this.books.findIndex(book => book.id === id);
+    if(index === -1){
+      throw new NotFoundException("No product with id")
+    }
+    this.books[index] = {
+      ...this.books[index],
+      ...updateBookDto
+    }
+    return this.books[index];
   }
 
   remove(id: number) {
